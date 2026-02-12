@@ -74,7 +74,6 @@ const TypewriterText = ({ text }: { text: string }) => {
 };
 
 const App = () => {
-  // States
   const [step, setStep] = useState(-1);
   const [adhamMemory, setAdhamMemory] = useState("");
   const [clickCount, setClickCount] = useState(0);
@@ -89,7 +88,6 @@ const App = () => {
 
   const finalPlayerRef = useRef<HTMLVideoElement>(null);
 
-  // Audio Refs
   const glowSfx = useRef(
     new Audio(
       "https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"
@@ -101,7 +99,6 @@ const App = () => {
     )
   );
 
-  // Logic: Friendship Duration
   const calculateFriendshipDuration = () => {
     const startDate = new Date("2019-02-04");
     const today = new Date();
@@ -183,6 +180,7 @@ const App = () => {
       const currentTime = finalPlayerRef.current.currentTime;
       setVideoTime(currentTime);
       const triggers = [26, 40, 46, 49, 56];
+      // الحل هنا: استبدال .includes بـ .some لحل مشكلة الـ TypeScript
       if (triggers.some((t) => Math.abs(currentTime - t) < 0.2)) {
         glowSfx.current.play().catch(() => {});
       }
@@ -208,7 +206,6 @@ const App = () => {
     setCapsuleText("");
   };
 
-  // Improved Prank Logic: Play sound on both buttons
   const handlePrankAction = () => {
     prankAudio.current.volume = 1.0;
     prankAudio.current.currentTime = 0;
@@ -216,7 +213,7 @@ const App = () => {
   };
 
   const handleSkipLogic = () => {
-    handlePrankAction(); // Trigger sound on skip too
+    handlePrankAction();
     if (skipCount < 5) {
       setSkipCount(skipCount + 1);
     } else {
@@ -225,7 +222,6 @@ const App = () => {
     }
   };
 
-  // Styles
   const glassStyle: React.CSSProperties = {
     background: "rgba(10, 10, 10, 0.9)",
     backdropFilter: "blur(25px)",
@@ -320,7 +316,6 @@ const App = () => {
               <h1 style={{ fontSize: "26px", fontWeight: "900" }}>
                 رأس مال الجدعنة
               </h1>
-              {/* التعديل المطلوب في النص التعريفي */}
               <p
                 style={{
                   color: "#FFD700",
@@ -527,7 +522,6 @@ const App = () => {
             </div>
           )}
 
-          {/* الخطوات من 7 إلى 10 */}
           {[7, 8, 10].includes(step) && (
             <div>
               <video
@@ -787,7 +781,6 @@ const App = () => {
               >
                 (اوعا تدوس هنا يسطا بلاش عشان مفيش حاجة .. هتتخطى ولا تدوس؟)
               </p>
-              {/* تعديل الصوت ليعمل في الحالتين كما طلبت */}
               <button
                 onClick={handlePrankAction}
                 style={{ ...btnStyle, background: "#ff4d4d", color: "#fff" }}
