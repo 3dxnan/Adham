@@ -5,15 +5,47 @@ import {
   MessageSquare,
   UserX,
   ShieldCheck,
-  Star,
   Gift,
   EyeOff,
   RotateCcw,
   Clock,
   MapPin,
+  Send,
+  Sparkles,
 } from "lucide-react";
 
-// Component لتأثير الكتابة
+// --- Particles Background Component ---
+const ParticlesBg = () => (
+  <div
+    style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}
+  >
+    {[...Array(15)].map((_, i) => (
+      <motion.div
+        key={i}
+        initial={{ opacity: 0.1, y: Math.random() * 100 + "%" }}
+        animate={{
+          y: ["0%", "100%"],
+          opacity: [0.1, 0.3, 0.1],
+        }}
+        transition={{
+          duration: Math.random() * 10 + 10,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+        style={{
+          position: "absolute",
+          left: Math.random() * 100 + "%",
+          width: "2px",
+          height: "2px",
+          background: "#fff",
+          borderRadius: "50%",
+        }}
+      />
+    ))}
+  </div>
+);
+
+// --- Typewriter Component ---
 const TypewriterText = ({ text }: { text: string }) => {
   const chars = text.split("");
   return (
@@ -42,6 +74,7 @@ const TypewriterText = ({ text }: { text: string }) => {
 };
 
 const App = () => {
+  // States
   const [step, setStep] = useState(-1);
   const [adhamMemory, setAdhamMemory] = useState("");
   const [clickCount, setClickCount] = useState(0);
@@ -51,10 +84,12 @@ const App = () => {
   const [giftOpened, setGiftOpened] = useState(false);
   const [videoTime, setVideoTime] = useState(0);
   const [skipCount, setSkipCount] = useState(0);
+  const [interactionMsg, setInteractionMsg] = useState("");
+  const [capsuleText, setCapsuleText] = useState("");
 
   const finalPlayerRef = useRef<HTMLVideoElement>(null);
 
-  // استخدام UseRef للـ Audio لضمان استقرارها
+  // Audio Refs
   const glowSfx = useRef(
     new Audio(
       "https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"
@@ -66,6 +101,7 @@ const App = () => {
     )
   );
 
+  // Logic: Friendship Duration
   const calculateFriendshipDuration = () => {
     const startDate = new Date("2019-02-04");
     const today = new Date();
@@ -158,13 +194,29 @@ const App = () => {
     return lyric ? lyric.text : "";
   };
 
-  const handlePrankSound = () => {
+  const handleInteraction = (msg: string) => {
+    setInteractionMsg(msg);
+    setTimeout(() => {
+      setInteractionMsg("");
+      setStep(12);
+    }, 2000);
+  };
+
+  const saveCapsule = () => {
+    localStorage.setItem("capsule2027", capsuleText);
+    alert("الرسالة اتحفظت في كبسولة الزمن.. هتقراها في 2027 إن شاء الله ❤️");
+    setCapsuleText("");
+  };
+
+  // Improved Prank Logic: Play sound on both buttons
+  const handlePrankAction = () => {
     prankAudio.current.volume = 1.0;
     prankAudio.current.currentTime = 0;
     prankAudio.current.play().catch(() => {});
   };
 
   const handleSkipLogic = () => {
+    handlePrankAction(); // Trigger sound on skip too
     if (skipCount < 5) {
       setSkipCount(skipCount + 1);
     } else {
@@ -186,6 +238,7 @@ const App = () => {
     color: "#ffffff",
     position: "relative",
     boxShadow: "0 0 40px rgba(255, 255, 255, 0.05)",
+    zIndex: 10,
   };
 
   const btnStyle: React.CSSProperties = {
@@ -199,6 +252,15 @@ const App = () => {
     fontSize: "15px",
     marginTop: "15px",
     width: "100%",
+  };
+
+  const ambilightStyle: React.CSSProperties = {
+    position: "absolute",
+    inset: "-20px",
+    background:
+      "radial-gradient(circle, rgba(255,215,0,0.15) 0%, rgba(0,0,0,0) 70%)",
+    filter: "blur(40px)",
+    zIndex: -1,
   };
 
   return (
@@ -215,6 +277,8 @@ const App = () => {
         fontFamily: "sans-serif",
       }}
     >
+      <ParticlesBg />
+
       {step >= 0 && (
         <div
           style={{
@@ -256,7 +320,18 @@ const App = () => {
               <h1 style={{ fontSize: "26px", fontWeight: "900" }}>
                 رأس مال الجدعنة
               </h1>
-              <p style={{ color: "#aaa", margin: "15px 0" }}>
+              {/* التعديل المطلوب في النص التعريفي */}
+              <p
+                style={{
+                  color: "#FFD700",
+                  fontWeight: "bold",
+                  margin: "10px 0 5px 0",
+                }}
+              >
+                الموقع دا اتبرمج واتعمل كله وخد وقت مني 5 ايام وهيفضل ان شاء
+                الله ذكرى بينا
+              </p>
+              <p style={{ color: "#aaa", margin: "10px 0" }}>
                 الأرشيف ده عشان يفكرك بمواقف وذكريات عدينا فيها سوا..
               </p>
               <button onClick={() => setStep(0)} style={btnStyle}>
@@ -452,7 +527,8 @@ const App = () => {
             </div>
           )}
 
-          {step === 7 && (
+          {/* الخطوات من 7 إلى 10 */}
+          {[7, 8, 10].includes(step) && (
             <div>
               <video
                 autoPlay
@@ -461,37 +537,29 @@ const App = () => {
                 style={{ width: "100%", borderRadius: "15px" }}
               >
                 <source
-                  src="https://res.cloudinary.com/dj36afflz/video/upload/v1770645825/VID-20240516-WA0025_iagrhn.mp4"
+                  src={
+                    step === 7
+                      ? "https://res.cloudinary.com/dj36afflz/video/upload/v1770645825/VID-20240516-WA0025_iagrhn.mp4"
+                      : step === 8
+                      ? "https://res.cloudinary.com/dj36afflz/video/upload/v1770645838/20231126_153448_t7bnvu.mp4"
+                      : "https://res.cloudinary.com/dj36afflz/video/upload/v1770645839/20221121_232339_wzgf2i.mp4"
+                  }
                   type="video/mp4"
                 />
               </video>
               <h2 style={{ fontSize: "18px", marginTop: "15px" }}>
-                (يعني مثلا زي هنا وانت فاكر انها تضحك وعامل نفسك جي اي اف)
+                {step === 7
+                  ? "(يعني مثلا زي هنا وانت فاكر انها تضحك وعامل نفسك جي اي اف)"
+                  : step === 8
+                  ? "(من ارشيف 2023 وكنت اتمنى تلعب معاهم ودي تجارب ضيعناها سوا)"
+                  : "(لما تقفل بتكون كتلة بضان)"}
               </h2>
-              <button onClick={() => setStep(8)} style={btnStyle}>
-                معاك حق بس انت ضحكت!
-              </button>
-            </div>
-          )}
-
-          {step === 8 && (
-            <div>
-              <video
-                autoPlay
-                loop
-                playsInline
-                style={{ width: "100%", borderRadius: "15px" }}
-              >
-                <source
-                  src="https://res.cloudinary.com/dj36afflz/video/upload/v1770645838/20231126_153448_t7bnvu.mp4"
-                  type="video/mp4"
-                />
-              </video>
-              <h2 style={{ fontSize: "18px", marginTop: "15px" }}>
-                (من ارشيف 2023 وكنت اتمنى تلعب معاهم ودي تجارب ضيعناها سوا)
-              </h2>
-              <button onClick={() => setStep(9)} style={btnStyle}>
-                انا شرموط فعلا (انت مش انا)
+              <button onClick={() => setStep(step + 1)} style={btnStyle}>
+                {step === 7
+                  ? "معاك حق بس انت ضحكت!"
+                  : step === 8
+                  ? "انا شرموط فعلا (انت مش انا)"
+                  : "هعديها بمزاجي"}
               </button>
             </div>
           )}
@@ -523,28 +591,6 @@ const App = () => {
             </div>
           )}
 
-          {step === 10 && (
-            <div>
-              <video
-                autoPlay
-                loop
-                playsInline
-                style={{ width: "100%", borderRadius: "15px" }}
-              >
-                <source
-                  src="https://res.cloudinary.com/dj36afflz/video/upload/v1770645839/20221121_232339_wzgf2i.mp4"
-                  type="video/mp4"
-                />
-              </video>
-              <h2 style={{ fontSize: "18px", marginTop: "15px" }}>
-                (لما تقفل بتكون كتلة بضان)
-              </h2>
-              <button onClick={() => setStep(11)} style={btnStyle}>
-                هعديها بمزاجي
-              </button>
-            </div>
-          )}
-
           {step === 11 && (
             <div>
               <video
@@ -562,24 +608,50 @@ const App = () => {
                 برضوا من الحاجات اللي كنت معاك فيها وجربناها بس عايز اعرف وانت
                 بتتفرج على الفيديو دا شعورك ايه دلوقتي؟
               </p>
-              <button
-                onClick={() => setStep(12)}
-                style={{ ...btnStyle, fontSize: "13px" }}
-              >
-                1- انا راضي دلوقتي جدا وحاسس برضى
-              </button>
-              <button
-                onClick={() => setStep(12)}
-                style={{ ...btnStyle, fontSize: "13px" }}
-              >
-                2- اه كان نفسي اكمل
-              </button>
-              <button
-                onClick={() => setStep(12)}
-                style={{ ...btnStyle, fontSize: "13px" }}
-              >
-                3- جاوب انت لو حابب
-              </button>
+              <AnimatePresence>
+                {interactionMsg && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    style={{
+                      color: "#FFD700",
+                      fontWeight: "bold",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    {interactionMsg}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              {!interactionMsg && (
+                <>
+                  <button
+                    onClick={() =>
+                      handleInteraction("ودايما يا رب راضي ومبسوط ❤️")
+                    }
+                    style={{ ...btnStyle, fontSize: "13px" }}
+                  >
+                    1- انا راضي دلوقتي جدا وحاسس برضى
+                  </button>
+                  <button
+                    onClick={() =>
+                      handleInteraction("الجاي أحلى وأقوى يا بطل 🚀")
+                    }
+                    style={{ ...btnStyle, fontSize: "13px" }}
+                  >
+                    2- اه كان نفسي اكمل
+                  </button>
+                  <button
+                    onClick={() =>
+                      handleInteraction("كلامك واصل من غير ما تقول.. ❤️")
+                    }
+                    style={{ ...btnStyle, fontSize: "13px" }}
+                  >
+                    3- جاوب انت لو حابب
+                  </button>
+                </>
+              )}
             </div>
           )}
 
@@ -715,8 +787,9 @@ const App = () => {
               >
                 (اوعا تدوس هنا يسطا بلاش عشان مفيش حاجة .. هتتخطى ولا تدوس؟)
               </p>
+              {/* تعديل الصوت ليعمل في الحالتين كما طلبت */}
               <button
-                onClick={handlePrankSound}
+                onClick={handlePrankAction}
                 style={{ ...btnStyle, background: "#ff4d4d", color: "#fff" }}
               >
                 هتدوس ولا تتخطى؟
@@ -877,11 +950,12 @@ const App = () => {
                   background: "#000",
                 }}
               >
+                <div style={ambilightStyle} />
                 <video
                   ref={finalPlayerRef}
                   onTimeUpdate={handleTimeUpdate}
                   controls
-                  style={{ width: "100%" }}
+                  style={{ width: "100%", position: "relative", zIndex: 1 }}
                 >
                   <source
                     src="https://res.cloudinary.com/dj36afflz/video/upload/v1770649462/videoplayback_trhtd1.mp4"
@@ -896,6 +970,7 @@ const App = () => {
                     right: 0,
                     textAlign: "center",
                     pointerEvents: "none",
+                    zIndex: 2,
                   }}
                 >
                   <AnimatePresence>
@@ -958,6 +1033,56 @@ const App = () => {
                     <TypewriterText text="ركز في باقي ليركس وعايزك تحسها ليك" />
                   )}
                 </AnimatePresence>
+              </div>
+              <div
+                style={{
+                  marginTop: "30px",
+                  padding: "20px",
+                  borderTop: "1px solid rgba(255,255,255,0.1)",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    color: "#FFD700",
+                    marginBottom: "10px",
+                    fontSize: "14px",
+                  }}
+                >
+                  <Sparkles size={16} />{" "}
+                  <span>كبسولة الزمن (رسالة لـ 2027)</span>
+                </div>
+                <div style={{ display: "flex", gap: "10px" }}>
+                  <input
+                    type="text"
+                    value={capsuleText}
+                    onChange={(e) => setCapsuleText(e.target.value)}
+                    placeholder="اكتب رسالة لنفسك أو ليا..."
+                    style={{
+                      flex: 1,
+                      background: "rgba(255,255,255,0.05)",
+                      border: "1px solid #333",
+                      borderRadius: "10px",
+                      padding: "10px",
+                      color: "#fff",
+                      outline: "none",
+                    }}
+                  />
+                  <button
+                    onClick={saveCapsule}
+                    style={{
+                      background: "#FFD700",
+                      border: "none",
+                      borderRadius: "10px",
+                      padding: "0 15px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <Send size={18} color="#000" />
+                  </button>
+                </div>
               </div>
               <button
                 onClick={() => setStep(-1)}
