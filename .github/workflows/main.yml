@@ -3,7 +3,7 @@ name: Deploy React Vite Site
 on:
   push:
     branches:
-      - main
+      - main  # هيشتغل تلقائياً أول ما تعمل Push للفرع الرئيسي
 
 permissions:
   contents: write
@@ -15,19 +15,25 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
 
+      - name: Install pnpm 📦
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8 # نسخة متوافقة مع معظم مشاريع Vite الحديثة
+
       - name: Setup Node ⚙️
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          # شيلنا سطر الـ cache مؤقتاً عشان ميفضلش يدي خطأ لو الملف ناقص
+          cache: 'pnpm' # تفعيل الكاش لتسريع العمليات القادمة
 
-      - name: Install and Build 🏗️
-        run: |
-          npm install
-          npm run build
+      - name: Install Dependencies 📥
+        run: pnpm install
+
+      - name: Build Project 🏗️
+        run: pnpm run build
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist
-          branch: gh-pages
+          folder: dist # المجلد الذي يخرجه Vite
+          branch: gh-pages # الفرع الذي سيحمل الموقع الـ Live
