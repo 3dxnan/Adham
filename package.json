@@ -1,6 +1,7 @@
 {
   "name": "react-typescript",
   "version": "1.0.0",
+  "homepage": "https://3dxnan.github.io/Adham/",
   "main": "src/index.tsx",
   "dependencies": {
     "canvas-confetti": "1.9.4",
