@@ -179,8 +179,7 @@ const App = () => {
     if (finalPlayerRef.current) {
       const currentTime = finalPlayerRef.current.currentTime;
       setVideoTime(currentTime);
-      const triggers = [26, 40, 46, 49, 56];
-      // الحل هنا: استبدال .includes بـ .some لحل مشكلة الـ TypeScript
+      const triggers = [26, 40, 45, 47, 56];
       if (triggers.some((t) => Math.abs(currentTime - t) < 0.2)) {
         glowSfx.current.play().catch(() => {});
       }
@@ -986,12 +985,17 @@ const App = () => {
                   </AnimatePresence>
                 </div>
               </div>
-              <div style={{ marginTop: "20px", minHeight: "110px" }}>
+              
+              {/* --- منطقة الرسائل المخصصة حسب توقيت الفيديو --- */}
+              <div style={{ marginTop: "20px", minHeight: "130px" }}>
                 <AnimatePresence mode="wait">
+                  {/* الرسالة الأصلية: من 26 إلى 39 ثانية */}
                   {videoTime >= 26 && videoTime < 39 && (
                     <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
+                      key="msg1"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
                       style={{
                         padding: "15px",
                         background: "rgba(255,255,255,0.05)",
@@ -1004,10 +1008,14 @@ const App = () => {
                       صحابنا لانك عمرك ما بخلت عليهم
                     </motion.div>
                   )}
+
+                  {/* الرسالة الأصلية: من 40 إلى 44 ثانية */}
                   {videoTime >= 40 && videoTime < 45 && (
                     <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
+                      key="msg2"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
                       style={{
                         padding: "15px",
                         background: "rgba(255,255,255,0.05)",
@@ -1022,11 +1030,50 @@ const App = () => {
                       عن شباب كتير
                     </motion.div>
                   )}
+
+                  {/* الرسالة الإضافية الجديدة (الثانية 45) */}
+                  {videoTime >= 45 && videoTime < 47 && (
+                    <motion.div
+                      key="msg3"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0 }}
+                      style={{
+                        padding: "15px",
+                        background: "rgba(255,255,255,0.08)",
+                        borderRadius: "15px",
+                        border: "1px solid #FFD700",
+                      }}
+                    >
+                      <strong>بيجاد بيقول:</strong> ما رضيتش أرد بمثله عشان إتربّيت والله .. وانا اكتر حد شوفت ادهم رغم تقصيره بحاجات كتير بس عمره ما قل من حد عشان "فلوس" او "صحبة" او "مصلحة"
+                    </motion.div>
+                  )}
+
+                  {/* الرسالة الإضافية الجديدة (الثانية 47) */}
+                  {videoTime >= 47 && videoTime < 56 && (
+                    <motion.div
+                      key="msg4"
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0 }}
+                      style={{
+                        padding: "15px",
+                        background: "rgba(255,255,255,0.05)",
+                        borderRadius: "15px",
+                        border: "1px solid #444",
+                      }}
+                    >
+                      <strong>بيجاد بيقول:</strong> بتسكتروها عليا ليه؟ ما أنا شقيت والله .. وربنا يشهد كنت لما تسند حد بتبقى حرفيا في ضهره رغم انه ممكن يكون فمرة دايقك بطريقة وحشة لكن رغم دا بتعدي وعايزك دايما كدا ومتتغيرش في الحتة دي واكبر اثبات انك بتشقى عشان العربية دلوقتي
+                    </motion.div>
+                  )}
+
+                  {/* الختام بعد ثانية 56 */}
                   {videoTime >= 56 && (
                     <TypewriterText text="ركز في باقي ليركس وعايزك تحسها ليك" />
                   )}
                 </AnimatePresence>
               </div>
+
               <div
                 style={{
                   marginTop: "30px",
