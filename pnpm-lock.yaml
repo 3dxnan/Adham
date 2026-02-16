@@ -9,8 +9,8 @@ dependencies:
     specifier: 1.9.4
     version: 1.9.4
   framer-motion:
-    specifier: 12.33.0
-    version: 12.33.0(react-dom@18.2.0)(react@18.2.0)
+    specifier: 12.33.2
+    version: 12.33.2(react-dom@18.2.0)(react@18.2.0)
   lucide-react:
     specifier: 0.563.0
     version: 0.563.0(react@18.2.0)
@@ -38,8 +38,8 @@ devDependencies:
     specifier: ^4.2.1
     version: 4.4.1(vite@5.4.21)
   typescript:
-    specifier: 4.4.4
-    version: 4.4.4
+    specifier: ^5.0.0
+    version: 5.9.3
   vite:
     specifier: ^5.0.11
     version: 5.4.21
@@ -772,8 +772,8 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  /framer-motion@12.33.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-ca8d+rRPcDP5iIF+MoT3WNc0KHJMjIyFAbtVLvM9eA7joGSpeqDfiNH/kCs1t4CHi04njYvWyj0jS4QlEK/rJQ==}
+  /framer-motion@12.33.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-7AwePP8vKvsAzAESRac0iWWrLrjhYsa58nPknV+ELFfNt1JDnfLbm/4xJCgIbWyYtHtPwhoyOAm8sRe8uCSHtA==}
     peerDependencies:
       '@emotion/is-prop-valid': '*'
       react: ^18.0.0 || ^19.0.0
@@ -969,9 +969,9 @@ packages:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
     dev: false
 
-  /typescript@4.4.4:
-    resolution: {integrity: sha512-DqGhF5IKoBl8WNf8C1gu8q0xZSInh9j1kJJMqT3a94w1JzVaBU4EXOSMrz9yDqMT0xt3selp83fuFMQ0uzv6qA==}
-    engines: {node: '>=4.2.0'}
+  /typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
     hasBin: true
     dev: true
 

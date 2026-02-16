@@ -1,39 +1,26 @@
 {
   "name": "react-typescript",
   "version": "1.0.0",
-  "description": "React and TypeScript example starter project",
-  "keywords": [
-    "typescript",
-    "react",
-    "starter"
-  ],
-  "homepage": "https://3dxnan.github.io/Adham/",
   "main": "src/index.tsx",
   "dependencies": {
+    "canvas-confetti": "1.9.4",
+    "framer-motion": "12.33.2",
+    "lucide-react": "0.563.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "framer-motion": "12.33.0",
-    "lucide-react": "0.563.0",
-    "canvas-confetti": "1.9.4",
-    "tailwindcss": "4.1.18",
-    "react-typewriter-hook": "2.0.1"
+    "react-typewriter-hook": "2.0.1",
+    "tailwindcss": "4.1.18"
   },
   "devDependencies": {
     "@types/react": "18.2.38",
     "@types/react-dom": "18.2.15",
-    "typescript": "4.4.4",
-    "vite": "^5.0.11",
-    "@vitejs/plugin-react": "^4.2.1"
+    "@vitejs/plugin-react": "^4.2.1",
+    "typescript": "^5.0.0",
+    "vite": "^5.0.11"
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  }
 }
