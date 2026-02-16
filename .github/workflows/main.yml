@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
+          # شيلنا سطر الـ cache مؤقتاً عشان ميفضلش يدي خطأ لو الملف ناقص
 
       - name: Install and Build 🏗️
         run: |
