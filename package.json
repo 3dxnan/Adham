@@ -7,6 +7,7 @@
     "react",
     "starter"
   ],
+  "homepage": "https://3dxnan.github.io/Adham/",
   "main": "src/index.tsx",
   "dependencies": {
     "react": "18.2.0",
